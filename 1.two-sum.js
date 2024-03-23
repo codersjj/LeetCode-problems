@@ -40,12 +40,10 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 var twoSum = function(nums, target) {
   const map = new Map()
   for (let i = 0; i < nums.length; i++) {
-    map.set(nums[i], i)
-  }
-  for (let i = 0; i < nums.length; i++) {
     const complement = target - nums[i]
-    if (map.has(complement) && map.get(complement) !== i) {
+    if (map.has(complement)) {
       return [map.get(complement), i]
     }
+    map.set(nums[i], i)
   }
 };
