@@ -27,6 +27,27 @@ Constraints:
 Follow up: If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log(n)).
 */
 
+// /**
+//  * @param {number} target
+//  * @param {number[]} nums
+//  * @return {number}
+//  */
+// var minSubArrayLen = function(target, nums) {
+//   const n = nums.length
+//   let minLen = Infinity
+//   for (let i = 0; i < n; i++) {
+//     let sum = 0
+//     for (let j = i; j < n; j++) {
+//       sum += nums[j]
+//       if (sum >= target) {
+//         minLen = Math.min(minLen, j - i + 1)
+//         break
+//       }
+//     }
+//   }
+//   return minLen === Infinity ? 0 : minLen
+// };
+
 /**
  * @param {number} target
  * @param {number[]} nums
@@ -34,16 +55,17 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
  */
 var minSubArrayLen = function(target, nums) {
   const n = nums.length
+  let start = 0
+  let sum = 0
   let minLen = Infinity
-  for (let i = 0; i < n; i++) {
-    let sum = 0
-    for (let j = i; j < n; j++) {
-      sum += nums[j]
-      if (sum >= target) {
-        minLen = Math.min(minLen, j - i + 1)
-        break
-      }
+  for (let end = 0; end < n; end++) {
+    sum += nums[end]
+    while (sum >= target) {
+      minLen = Math.min(minLen, end - start + 1)
+      sum -= nums[start]
+      start++
     }
   }
+
   return minLen === Infinity ? 0 : minLen
 };
