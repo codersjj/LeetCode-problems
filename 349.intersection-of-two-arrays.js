@@ -19,27 +19,50 @@ Constraints:
 0 <= nums1[i], nums2[i] <= 1000
 */
 
+// /**
+//  * @param {number[]} nums1
+//  * @param {number[]} nums2
+//  * @return {number[]}
+//  */
+// var intersection = function(nums1, nums2) {
+//   const orderedNums1 = [...nums1].sort((x, y) => x - y)
+//   const orderedNums2 = [...nums2].sort((x, y) => x - y)
+//   const result = []
+//   let i = 0
+//   let j = 0
+//   while (i < orderedNums1.length && j < orderedNums2.length) {
+//     if (orderedNums1[i] === orderedNums2[j] && !result.includes(orderedNums1[i])) {
+//       result.push(orderedNums1[i])
+//       i++
+//       j++
+//     } else if (orderedNums1[i] < orderedNums2[j]) {
+//       i++
+//     } else {
+//       j++
+//     }
+//   }
+//   return result
+// };
+
 /**
  * @param {number[]} nums1
  * @param {number[]} nums2
  * @return {number[]}
  */
 var intersection = function(nums1, nums2) {
-  const orderedNums1 = [...nums1].sort((x, y) => x - y)
-  const orderedNums2 = [...nums2].sort((x, y) => x - y)
-  const result = []
-  let i = 0
-  let j = 0
-  while (i < orderedNums1.length && j < orderedNums2.length) {
-    if (orderedNums1[i] === orderedNums2[j] && !result.includes(orderedNums1[i])) {
-      result.push(orderedNums1[i])
-      i++
-      j++
-    } else if (orderedNums1[i] < orderedNums2[j]) {
-      i++
-    } else {
-      j++
-    }
+  const getIntersection = (set1, set2) => {
+    const result = []
+    s1.forEach(num => {
+      if (s2.has(num)) {
+        result.push(num)
+      }
+    })
+    return result
   }
-  return result
+
+  const s1 = new Set(nums1)
+  const s2 = new Set(nums2)
+
+  if (s1.size < s2.size) return getIntersection(s1, s2)
+  else return getIntersection(s2, s1)
 };
