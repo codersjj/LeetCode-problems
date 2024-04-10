@@ -44,25 +44,34 @@ Constraints:
 //   return result
 // };
 
+// /**
+//  * @param {number[]} nums1
+//  * @param {number[]} nums2
+//  * @return {number[]}
+//  */
+// var intersection = function(nums1, nums2) {
+//   const getIntersection = (set1, set2) => {
+//     const result = []
+//     s1.forEach(num => {
+//       if (s2.has(num)) {
+//         result.push(num)
+//       }
+//     })
+//     return result
+//   }
+
+//   const s1 = new Set(nums1)
+//   const s2 = new Set(nums2)
+
+//   if (s1.size < s2.size) return getIntersection(s1, s2)
+//   else return getIntersection(s2, s1)
+// };
+
 /**
  * @param {number[]} nums1
  * @param {number[]} nums2
  * @return {number[]}
  */
 var intersection = function(nums1, nums2) {
-  const getIntersection = (set1, set2) => {
-    const result = []
-    s1.forEach(num => {
-      if (s2.has(num)) {
-        result.push(num)
-      }
-    })
-    return result
-  }
-
-  const s1 = new Set(nums1)
-  const s2 = new Set(nums2)
-
-  if (s1.size < s2.size) return getIntersection(s1, s2)
-  else return getIntersection(s2, s1)
+  return [...new Set(nums1.filter(num => nums2.includes(num)))]
 };
