@@ -38,6 +38,39 @@ Follow up: Could you do it in O(n) time and O(1) space?
  * @return {boolean}
  */
 var isPalindrome = function(head) {
+  // Step 1: Traverse the linked list and store each node's value in an array
+  let vals = []
+  let curr = head
+  while (curr) {
+    vals.push(curr.val)
+    curr = curr.next
+  }
+
+  // Step 2: Use two pointers to check if the array is a palindrome
+  let left = 0
+  let right = vals.length - 1
+  while (left <= right) {
+    if (vals[left] !== vals[right]) {
+      return false
+    }
+    left++
+    right--
+  }
+  return true
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
   // 1. find the middle of the list
   let slow = head
   let fast = head
