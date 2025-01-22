@@ -70,3 +70,37 @@ var isPalindrome = function(s) {
   }
   return true
 };
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isPalindrome = function(s) {
+  function isAlphanumeric(c) {
+    const charCode = c.charCodeAt(0)
+    return (
+      (charCode >= 48 && charCode <= 57) ||
+      (charCode >= 65 && charCode <= 90) ||
+      (charCode >= 97 && charCode <= 122)
+    )
+  }
+
+  let left = 0
+  let right = s.length - 1
+  while (left < right) {
+    while (left < right && !isAlphanumeric(s[left])) {
+      left++
+    }
+    while (left < right && !isAlphanumeric(s[right])) {
+      right--
+    }
+
+    if (s[left].toLowerCase() !== s[right].toLowerCase()) {
+      return false
+    }
+    left++
+    right--
+  }
+
+  return true
+};
