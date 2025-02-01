@@ -55,3 +55,26 @@ var sortedSquares = function(nums) {
   }
   return result
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortedSquares = function(nums) {
+  const res = []
+
+  let left = 0
+  let right = nums.length - 1
+
+  while (left <= right) {
+    if (nums[left] ** 2 > nums[right] ** 2) {
+      res.push(nums[left] ** 2)
+      left++
+    } else {
+      res.push(nums[right] ** 2)
+      right--
+    }
+  }
+
+  return res.reverse()
+};
