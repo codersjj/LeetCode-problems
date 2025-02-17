@@ -64,3 +64,24 @@ var maxDepth = function(root) {
 
   return depth
 };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+  // iterative DFS
+  let depth = 0
+  const stack = [[root, 1]]
+
+  while (stack.length) {
+    const [node, level] = stack.pop()
+    if (node) {
+      depth = Math.max(depth, level)
+      stack.push([node.left, level + 1])
+      stack.push([node.right, level + 1])
+    }
+  }
+
+  return depth
+};
