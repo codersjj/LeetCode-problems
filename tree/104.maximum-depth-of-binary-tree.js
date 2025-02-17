@@ -41,3 +41,26 @@ var maxDepth = function(root) {
 
   return 1 + Math.max(maxDepth(root.left), maxDepth(root.right))
 };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+  // iterative Breadth First Search
+  if (!root) return 0
+  let depth = 0
+  const queue = [root]
+
+  while (queue.length) {
+    depth++
+    const levelSize = queue.length
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()
+      if (node.left) queue.push(node.left)
+      if (node.right) queue.push(node.right)
+    }
+  }
+
+  return depth
+};
