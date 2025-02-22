@@ -38,36 +38,63 @@ The number of nodes in head is in the range [0, 2 * 104].
  *     this.right = (right===undefined ? null : right)
  * }
  */
+// /**
+//  * @param {ListNode} head
+//  * @return {TreeNode}
+//  */
+// var sortedListToBST = function(head) {
+//   // linked list -> arr
+//   const sortedArr = []
+//   let cur = head
+//   while (cur) {
+//     sortedArr.push(cur.val)
+//     cur = cur.next
+//   }
+
+//   // sortedArrToBST
+//   function sortedArrToBST(arr) {
+//     function buildBST(arr, left, right) {
+//       if (left > right) {
+//         return null
+//       }
+
+//       const mid = left + ((right - left) >> 1)
+//       const node = new TreeNode(arr[mid])
+//       node.left = buildBST(arr, left, mid - 1)
+//       node.right = buildBST(arr, mid + 1, right)
+
+//       return node
+//     }
+
+//     return buildBST(arr, 0, arr.length - 1)
+//   }
+
+//   return sortedArrToBST(sortedArr)
+// };
+
 /**
  * @param {ListNode} head
  * @return {TreeNode}
  */
 var sortedListToBST = function(head) {
-  // linked list -> arr
-  const sortedArr = []
-  let cur = head
-  while (cur) {
-    sortedArr.push(cur.val)
-    cur = cur.next
+  if (!head) return null
+  if (!head.next) return new TreeNode(head.val)
+
+  let prev = null
+  let slow = head
+  let fast = head
+
+  while (fast && fast.next) {
+    prev = slow
+    slow = slow.next
+    fast = fast.next.next
   }
 
-  // sortedArrToBST
-  function sortedArrToBST(arr) {
-    function buildBST(arr, left, right) {
-      if (left > right) {
-        return null
-      }
+  prev.next = null
 
-      const mid = left + ((right - left) >> 1)
-      const node = new TreeNode(arr[mid])
-      node.left = buildBST(arr, left, mid - 1)
-      node.right = buildBST(arr, mid + 1, right)
+  const node = new TreeNode(slow.val)
+  node.left = sortedListToBST(head)
+  node.right = sortedListToBST(slow.next)
 
-      return node
-    }
-
-    return buildBST(arr, 0, arr.length - 1)
-  }
-
-  return sortedArrToBST(sortedArr)
+  return node
 };
