@@ -47,3 +47,23 @@ var twoSum = function(nums, target) {
     map.set(nums[i], i)
   }
 };
+
+// or:
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  const prevMap = {}
+  for (let i = 0; i < nums.length; i++) {
+    const n = nums[i]
+    const diff = target - n
+    if (diff in prevMap) {
+      return [prevMap[diff], i]
+    } else {
+      prevMap[n] = i
+    }
+  }
+};
