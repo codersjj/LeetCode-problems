@@ -61,13 +61,12 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
  * @return {number[]}
  */
 var postorderTraversal = function(root) {
-  if (!root) return []
-  const res = []
+  const res =  []
 
   function dfs(node) {
     if (!node) return
-    if (node.left) dfs(node.left)
-    if (node.right) dfs(node.right)
+    dfs(node.left)
+    dfs(node.right)
     res.push(node.val)
   }
 
