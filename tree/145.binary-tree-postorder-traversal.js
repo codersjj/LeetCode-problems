@@ -82,6 +82,48 @@ var postorderTraversal = function(root) {
  * @return {number[]}
  */
 var postorderTraversal = function(root) {
+  let res = []
+
+  function dfs(node) {
+    if (!node) return
+    res.unshift(node.val)
+    dfs(node.right)
+    dfs(node.left)
+  }
+
+  dfs(root)
+
+  return res
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var postorderTraversal = function(root) {
+  let res = []
+
+  function dfs(node) {
+    if (!node) return
+    res.push(node.val)
+    dfs(node.right)
+    dfs(node.left)
+  }
+
+  dfs(root)
+
+  return res.reverse()
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var postorderTraversal = function(root) {
   if (!root) return []
   const res = []
   const stack = [root]
