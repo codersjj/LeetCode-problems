@@ -114,3 +114,59 @@ var binaryTreePaths = function(root) {
 
   return res
 };
+
+// or:
+// iteration(DFS):
+
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+  if (!root) return []
+  const res = []
+  const stack = [{ node: root, path: '' }]
+
+  while (stack.length) {
+    const { node, path } = stack.pop()
+    if (!node.left && !node.right) {
+      res.push(path + node.val)
+    }
+    if (node.left) {
+      stack.push({ node: node.left, path: path + node.val + '->' })
+    }
+    if (node.right) {
+      stack.push({ node: node.right, path: path + node.val + '->' })
+    }
+  }
+
+  return res
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+  if (!root) return []
+  const res = []
+  const stack = [{ node: root, path: '' }]
+
+  while (stack.length) {
+    const { node, path } = stack.pop()
+    const currentPath = path ? `${path}->${node.val}` : `${node.val}`
+    if (!node.left && !node.right) {
+      res.push(currentPath)
+    }
+    if (node.left) {
+      stack.push({ node: node.left, path: currentPath })
+    }
+    if (node.right) {
+      stack.push({ node: node.right, path: currentPath })
+    }
+  }
+
+  return res
+};
