@@ -80,6 +80,8 @@ var evalRPN = function(tokens) {
       case '/':
         // res = x / y > 0 ? Math.floor(x / y) : Math.ceil(x / y)
         // res = Math.trunc(x / y)
+        // Bitwise operations convert their operands to 32-bit integers
+        // see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc#using_bitwise_no-ops_to_truncate_numbers
         res = (x / y) | 0
         break
     }
@@ -88,4 +90,36 @@ var evalRPN = function(tokens) {
   }
 
   return stack[0]
+};
+
+// or:
+
+/**
+ * @param {string[]} tokens
+ * @return {number}
+ */
+var evalRPN = function(tokens) {
+  const stack = []
+
+  for (let t of tokens) {
+    if (Number.isInteger(+t)) {
+      stack.push(+t)
+      continue
+    }
+
+    const secondOperand = stack.pop()
+    const firstOperand = stack.pop()
+
+    if (t === '+') {
+      stack.push(firstOperand + secondOperand)
+    } else if (t === '-') {
+      stack.push(firstOperand - secondOperand)
+    } else if (t === '*') {
+      stack.push(firstOperand * secondOperand)
+    } else if (t === '/') {
+      stack.push((firstOperand / secondOperand) | 0)
+    }
+  }
+
+  return stack.pop()
 };
