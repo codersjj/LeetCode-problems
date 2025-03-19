@@ -76,6 +76,33 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 //   return root
 // };
 
+// or:
+
+/**
+ * @param {_Node} root
+ * @return {_Node}
+ */
+var connect = function(root) {
+  if (!root) return null
+  const queue = [root]
+
+  while (queue.length) {
+    let levelSize = queue.length
+    let prev = null
+
+    while (levelSize--) {
+      const node = queue.shift()
+      if (prev) prev.next = node
+      prev = node
+
+      node.left && queue.push(node.left)
+      node.right && queue.push(node.right)
+    }
+  }
+
+  return root
+};
+
 /**
  * @param {_Node} root
  * @return {_Node}
