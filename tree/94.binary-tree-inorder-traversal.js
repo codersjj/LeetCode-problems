@@ -101,3 +101,29 @@ var inorderTraversal = function(root) {
 
   return res
 };
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var inorderTraversal = function(root) {
+  if (!root) return []
+  const res = []
+  const stack = []
+  let cur = root
+
+  while (cur || stack.length) {
+    if (cur) {
+      stack.push(cur)
+      cur = cur.left
+    } else {
+      cur = stack.pop()
+      res.push(cur.val)
+      cur = cur.right
+    }
+  }
+
+  return res
+};
