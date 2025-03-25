@@ -104,6 +104,29 @@ var sumOfLeftLeaves = function(root) {
  */
 var sumOfLeftLeaves = function(root) {
   if (!root) return 0
+  const stack = [root]
+  let sum = 0
+
+  while (stack.length) {
+    const node = stack.pop()
+    if (node.left && !node.left.left && !node.left.right) {
+      sum += node.left.val
+    }
+    node.left && stack.push(node.left)
+    node.right && stack.push(node.right)
+  }
+
+  return sum
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function(root) {
+  if (!root) return 0
 
   let sum = 0
 
