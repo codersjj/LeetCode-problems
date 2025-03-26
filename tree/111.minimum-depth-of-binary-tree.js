@@ -40,6 +40,20 @@ The number of nodes in the tree is in the range [0, 105].
  */
 var minDepth = function(root) {
   if (!root) return 0
+  if (!root.left) return 1 + minDepth(root.right)
+  if (!root.right) return 1 + minDepth(root.left)
+
+  return 1 + Math.min(minDepth(root.left), minDepth(root.right))
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var minDepth = function(root) {
+  if (!root) return 0
 
   let minDepth = 1
   const queue = [root]
@@ -55,6 +69,33 @@ var minDepth = function(root) {
       if (node.right) queue.push(node.right)
     }
     minDepth++
+  }
+
+  return minDepth
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var minDepth = function(root) {
+  if (!root) return 0
+  let minDepth = 0
+  const queue = [root]
+
+  while (queue.length) {
+    const levelSize = queue.length
+    minDepth++
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()
+      if (!node.left && !node.right) {
+        return minDepth
+      }
+      node.left && queue.push(node.left)
+      node.right && queue.push(node.right)
+    }
   }
 
   return minDepth
