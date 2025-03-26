@@ -115,3 +115,27 @@ var preorderTraversal = function(root) {
 
   return res
 };
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+  if (!root) return []
+  const res = []
+  const stack = []
+  let cur = root
+
+  while (cur || stack.length) {
+    while (cur) {
+      res.push(cur.val)
+      stack.push(cur.right)
+      cur = cur.left
+    }
+    cur = stack.pop()
+  }
+
+  return res
+};
