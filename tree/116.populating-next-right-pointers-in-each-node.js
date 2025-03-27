@@ -98,3 +98,30 @@ var connect = function(root) {
 
   return root
 };
+
+// or:
+
+/**
+ * @param {_Node} root
+ * @return {_Node}
+ */
+var connect = function(root) {
+  if (!root) return null
+  let cur = root
+  let nxt = root.left
+
+  while (cur && nxt) {
+    while (cur) {
+      cur.left.next = cur.right
+      if (cur.next) {
+        cur.right.next = cur.next.left
+      }
+      cur = cur.next
+    }
+
+    cur = nxt
+    nxt = nxt.left
+  }
+
+  return root
+};
