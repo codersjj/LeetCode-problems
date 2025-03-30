@@ -50,3 +50,24 @@ var maxProfit = function(prices) {
 
   return max
 };
+
+// or:
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let left = 0
+  let max = 0
+
+  for (let right = 1; right < prices.length; right++) {
+    if (prices[left] < prices[right]) {
+      max = Math.max(max, prices[right] - prices[left])
+    } else {
+      left = right
+    }
+  }
+
+  return max
+};
