@@ -47,3 +47,52 @@ var reverseWords = function(s) {
   words.reverse()
   return words.join(' ')
 };
+
+// or:
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var reverseWords = function(s) {
+  s = s.trim()
+  const words = s.split(/\s+/)
+
+  let left = 0
+  let right = words.length - 1
+
+  while (left < right) {
+    [words[left], words[right]] = [words[right], words[left]]
+    left++
+    right--
+  }
+
+  return words.join(' ')
+};
+
+// or:
+// no split / reverse methods
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var reverseWords = function(s) {
+  const res = []
+
+  let word = ''
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === ' ') {
+      if (word) {
+        res.unshift(word)
+        word = ''
+      }
+    } else {
+      word += s[i]
+    }
+  }
+
+  if (word) res.unshift(word)
+
+  return res.join(' ')
+};
