@@ -37,6 +37,8 @@ var minDistance = function(word1, word2) {
   // then we can calculate the minimum number of steps
 
   const dp = Array.from({ length: word1.length + 1 }, () => Array(word2.length + 1).fill(0))
+  // or:
+  // const dp = Array(word1.length + 1).fill().map(() => Array(word2.length + 1).fill(0))
 
   for (let i = 1; i <= word1.length; i++) {
     for (let j = 1; j <= word2.length; j++) {
