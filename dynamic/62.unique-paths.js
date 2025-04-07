@@ -76,3 +76,28 @@ var uniquePaths = function(m, n) {
 
   return dp[m - 1][n - 1]
 };
+
+// or:
+// Space optimized version
+// Instead of using a 2D DP array (dp[i][j]), this solution uses a 1D array (dp[i]), reducing the space complexity from O(m × n) to O(m).
+// This is possible because the value of dp[i][j] only depends on the values from the previous row (dp[i-1][j]) and the current row (dp[i][j-1]).
+// So, we can keep track of the current row's values in a 1D array and update it as we iterate through the columns.
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var uniquePaths = function(m, n) {
+  // m x n => m => one col
+  const dp = Array(m).fill(1)
+
+  // col
+  for (let j = 1; j < n; j++) {
+    // row
+    for (let i = 1; i < m; i++) {
+      dp[i] += dp[i - 1]
+    }
+  }
+
+  return dp[m - 1]
+};
