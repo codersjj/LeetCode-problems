@@ -80,6 +80,21 @@ var lengthOfLIS = function(nums) {
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
+  /*
+    [10,9,2,5,3,7,101,18]
+
+    res = []
+
+    num: 10,  res: [10]
+    num: 9,   res: [9]
+    num: 2,   res: [2]
+    num: 5,   res: [2, 5]
+    num: 3,   res: [2, 3]
+    num: 7,   res: [2, 3, 7]
+    num: 101, res: [2, 3, 7, 101]
+    num: 18,  res: [2, 3, 7, 18]
+  */
+
   // Initialize an empty array to store the longest increasing subsequence
   // dp[i] will be the smallest tail of all increasing subsequences of length i+1
   const dp = []
