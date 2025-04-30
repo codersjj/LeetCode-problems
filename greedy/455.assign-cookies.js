@@ -39,6 +39,30 @@ Note: This question is the same as 2410: Maximum Matching of Players With Traine
  * @return {number}
  */
 var findContentChildren = function(g, s) {
+  g.sort((a, b) => a - b)
+  s.sort((a, b) => a - b)
+
+  let i = 0
+  let j = 0
+
+  while (i < g.length && j < s.length) {
+    if (g[i] <= s[j]) {
+      i++
+    }
+    j++
+  }
+
+  return i
+};
+
+// or:
+
+/**
+ * @param {number[]} g
+ * @param {number[]} s
+ * @return {number}
+ */
+var findContentChildren = function(g, s) {
   g = g.sort((a, b) => a - b)
   s = s.sort((a, b) => a - b)
 
