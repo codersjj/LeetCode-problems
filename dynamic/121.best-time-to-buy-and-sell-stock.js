@@ -33,6 +33,42 @@ Constraints:
  * @return {number}
  */
 var maxProfit = function(prices) {
+  let res = 0
+  let minPrice = prices[0]
+
+  for (let i = 1; i < prices.length; i++) {
+    minPrice = Math.min(minPrice, prices[i])
+    res = Math.max(res, prices[i] - minPrice)
+  }
+
+  return res
+};
+
+// or:
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  let profit = 0
+  let pos = -prices[0]
+
+  for (let i = 1; i < prices.length; i++) {
+    pos = Math.max(pos, -prices[i])
+    profit = Math.max(profit, pos + prices[i])
+  }
+
+  return profit
+};
+
+// or:
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
   let max = 0
 
   let left = 0 // buy
