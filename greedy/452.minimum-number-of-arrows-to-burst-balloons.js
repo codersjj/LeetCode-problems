@@ -60,3 +60,30 @@ var findMinArrowShots = function(points) {
 
   return res
 };
+
+// or:
+
+/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+var findMinArrowShots = function(points) {
+  let res = points.length
+
+  points.sort((a, b) => a[0] - b[0])
+
+  let prevEnd = points[0][1]
+
+  for (let i = 1; i < points.length; i++) {
+    const currStart = points[i][0]
+    const currEnd = points[i][1]
+    if (currStart <= prevEnd) {
+      res--
+      prevEnd = Math.min(prevEnd, currEnd)
+    } else {
+      prevEnd = currEnd
+    }
+  }
+
+  return res
+};
