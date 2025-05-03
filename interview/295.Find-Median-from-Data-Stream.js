@@ -93,3 +93,141 @@ MedianFinder.prototype.findMedian = function() {
  * var param_2 = obj.findMedian()
  */
 
+// or:
+
+var MedianFinder = function() {
+  this.small = new Heap((a, b) => b - a) // max heap
+  this.large = new Heap((a, b) => a - b) // min heap
+};
+
+/**
+ * @param {number} num
+ * @return {void}
+ */
+MedianFinder.prototype.addNum = function(num) {
+  this.small.add(num)
+
+  // make sure every num in small is <= every num in large
+  if (
+    this.small.size() && this.large.size() &&
+    this.small.peek() > this.large.peek()
+  ) {
+    const val = this.small.pop()
+    this.large.add(val)
+  }
+
+  // uneven size?
+  if (this.small.size() > this.large.size() + 1) {
+    const val = this.small.pop()
+    this.large.add(val)
+  }
+
+  if (this.large.size() > this.small.size() + 1) {
+    const val = this.large.pop()
+    this.small.add(val)
+  }
+};
+
+/**
+ * @return {number}
+ */
+MedianFinder.prototype.findMedian = function() {
+  const smallHeapSize = this.small.size()
+  const largeHeapSize = this.large.size()
+  if (smallHeapSize === largeHeapSize) {
+    return (this.small.peek() + this.large.peek()) / 2
+  } else if (smallHeapSize > largeHeapSize) {
+    return this.small.peek()
+  } else if (smallHeapSize < largeHeapSize) {
+    return this.large.peek()
+  }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * var obj = new MedianFinder()
+ * obj.addNum(num)
+ * var param_2 = obj.findMedian()
+ */
+
+class Heap {
+  constructor(compareFn) {
+    this.compareFn = compareFn
+    this.heap = []
+  }
+
+  add(val) {
+    this.heap.push(val)
+    this.heapifyUp(this.size() - 1)
+  }
+
+  pop() {
+    const top = this.heap[0]
+    const last = this.heap.pop()
+    if (this.size()) {
+      this.heap[0] = last
+      this.heapifyDown(0)
+    }
+
+    return top
+  }
+
+  peek() {
+    return this.heap[0]
+  }
+
+  heapifyUp(index) {
+    while (index) {
+      const parent = this.parent(index)
+      if (!this.isHigherPriority(index, parent)) break
+      this.swap(index, parent)
+      index = parent
+    }
+  }
+
+  heapifyDown(index) {
+    while (this.hasLeftChild(index)) {
+      const leftChild = this.leftChild(index)
+      const rightChild = this.rightChild(index)
+      let higherPriorityChild = leftChild
+      if (this.hasRightChild(index) && this.isHigherPriority(rightChild, leftChild)) {
+        higherPriorityChild = rightChild
+      }
+      if (!this.isHigherPriority(higherPriorityChild, index)) break
+      this.swap(index, higherPriorityChild)
+      index = higherPriorityChild
+    }
+  }
+
+  swap(index1, index2) {
+    [this.heap[index1], this.heap[index2]] = [this.heap[index2], this.heap[index1]]
+  }
+
+  isHigherPriority(index1, index2) {
+    return this.compareFn(this.heap[index1], this.heap[index2]) < 0
+  }
+
+  parent(childIndex) {
+    return Math.floor((childIndex - 1) / 2)
+  }
+
+  leftChild(parentIndex) {
+    return 2 * parentIndex + 1
+  }
+
+  rightChild(parentIndex) {
+    return 2 * parentIndex + 2
+  }
+
+  hasLeftChild(index) {
+    return this.leftChild(index) < this.size()
+  }
+
+  hasRightChild(index) {
+    return this.rightChild(index) < this.size()
+  }
+
+  size() {
+    return this.heap.length
+  }
+}
