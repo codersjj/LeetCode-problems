@@ -79,6 +79,40 @@ var lemonadeChange = function(bills) {
  * @return {boolean}
  */
 var lemonadeChange = function(bills) {
+  const map = {}
+
+  for (let i = 0; i < bills.length; i++) {
+    const bill = bills[i]
+    map[bill] = (map[bill] || 0) + 1
+
+    if (bill === 10) {
+      if (map[5]) {
+        map[5] -= 1
+      } else {
+        return false
+      }
+    } else if (bill === 20) {
+      if (map[5] && map[10]) {
+        map[5] -= 1
+        map[10] -= 1
+      } else if (map[5] >= 3) {
+        map[5] -= 3
+      } else {
+        return false
+      }
+    }
+  }
+
+  return true
+};
+
+// or:
+
+/**
+ * @param {number[]} bills
+ * @return {boolean}
+ */
+var lemonadeChange = function(bills) {
   let five = 0
   let ten = 0
 
