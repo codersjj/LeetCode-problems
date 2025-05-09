@@ -50,6 +50,26 @@ The number of nodes in the tree is in the range [0, 5000].
  * @return {boolean}
  */
 var hasPathSum = function(root, targetSum) {
+  if (!root) return false
+
+  const curSum = root.val
+
+  if (!root.left && !root.right) {
+    return curSum === targetSum
+  }
+
+  return hasPathSum(root.left, targetSum - root.val) ||
+    hasPathSum(root.right, targetSum - root.val)
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+var hasPathSum = function(root, targetSum) {
   function dfs(node, curSum) {
     if (!node) {
       return false
