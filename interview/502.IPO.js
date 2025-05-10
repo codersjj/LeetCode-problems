@@ -160,3 +160,36 @@ class Heap {
     [this.heap[index1], this.heap[index2]] = [this.heap[index2], this.heap[index1]]
   }
 }
+
+// or:
+
+/**
+ * @param {number} k
+ * @param {number} w
+ * @param {number[]} profits
+ * @param {number[]} capital
+ * @return {number}
+ */
+var findMaximizedCapital = function(k, w, profits, capital) {
+  const arr = capital
+    .map((item, i) => [item, profits[i]])
+    .sort((a, b) => a[0] - b[0])
+  const maxHeap = new Heap((a, b) => b - a) // Array<profit>
+
+  let currentCapital = w
+  let cur = 0
+  for (let i = 0; i < k; i++) {
+    while (cur < arr.length && arr[cur][0] <= currentCapital) {
+      maxHeap.add(arr[cur][1])
+      cur++
+    }
+
+    if (!maxHeap.size()) {
+      break
+    }
+
+    currentCapital += maxHeap.pop()
+  }
+
+  return currentCapital
+};
