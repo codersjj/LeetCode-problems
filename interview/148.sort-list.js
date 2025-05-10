@@ -199,3 +199,54 @@ const merge = (left, right) => {
   return dummy.next
 }
 
+// or:
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var sortList = function(head) {
+  if (!head) return null
+  if (!head.next) return head
+
+  let prev = null
+  let slow = head
+  let fast = head
+  while (fast && fast.next) {
+    prev = slow
+    slow = slow.next
+    fast = fast.next.next
+  }
+  prev.next = null
+
+  const left = sortList(head)
+  const right = sortList(slow)
+
+  // merge
+  let i = left
+  let j = right
+  const dummy = new ListNode()
+  let cur = dummy
+  while (i && j) {
+    if (i.val <= j.val) {
+      cur.next = i
+      i = i.next
+    } else {
+      cur.next = j
+      j = j.next
+    }
+    cur = cur.next
+  }
+
+  if (i) cur.next = i
+  if (j) cur.next = j
+
+  return dummy.next
+};
