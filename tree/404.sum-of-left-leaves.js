@@ -181,6 +181,37 @@ var sumOfLeftLeaves = function(root) {
  */
 var sumOfLeftLeaves = function(root) {
   if (!root) return 0
+  const queue = [[root, false]]
+  let sum = 0
+
+  while (queue.length) {
+    // let levelSize = queue.length
+
+    // while (levelSize--) {
+      const [node, isLeft] = queue.shift()
+      if (isLeft && !node.left && !node.right) {
+        sum += node.val
+      }
+      if (node.left) {
+        queue.push([node.left, true])
+      }
+      if (node.right) {
+        queue.push([node.right, false])
+      }
+    // }
+  }
+
+  return sum
+};
+
+// or:
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function(root) {
+  if (!root) return 0
   let leftLeafVal = 0
   if (root.left && !root.left.left && !root.left.right) {
     leftLeafVal = root.left.val
