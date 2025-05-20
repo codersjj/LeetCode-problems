@@ -86,6 +86,6 @@ var isPowerOfThree = function(n) {
 var isPowerOfThree = function(n) {
   // 3 ** 19 < 2 ** 31 - 1
   // 3 ** 20 > 2 ** 31 - 1
-  // The largest power of three within the 32-bit integer range is 3^19 = 1162261467. If n is a positive divisor of this number, it must be a power of three. 
+  // The largest power of three within the 32-bit integer range is 3^19 = 1162261467. If n is a positive divisor of this number, it must be a power of three.
   return n > 0 && 3 ** 19 % n === 0
 };

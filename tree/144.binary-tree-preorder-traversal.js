@@ -56,43 +56,47 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
  *     this.right = (right===undefined ? null : right)
  * }
  */
-// /**
-//  * @param {TreeNode} root
-//  * @return {number[]}
-//  */
-// var preorderTraversal = function(root) {
-//   const res = []
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+  const res = []
 
-//   function dfs(node) {
-//     if (!node) return
-//     res.push(node.val)
-//     dfs(node.left)
-//     dfs(node.right)
-//   }
+  function dfs(node) {
+    if (!node) return
+    res.push(node.val)
+    dfs(node.left)
+    dfs(node.right)
+  }
 
-//   dfs(root)
+  dfs(root)
 
-//   return res
-// };
+  return res
+};
 
-// /**
-//  * @param {TreeNode} root
-//  * @return {number[]}
-//  */
-// var preorderTraversal = function(root) {
-//   if (!root) return []
-//   const res = []
-//   const stack = [root]
+// or:
 
-//   while (stack.length) {
-//     const node = stack.pop()
-//     res.push(node.val)
-//     if (node.right) stack.push(node.right)
-//     if (node.left) stack.push(node.left)
-//   }
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+  if (!root) return []
+  const res = []
+  const stack = [root]
 
-//   return res
-// };
+  while (stack.length) {
+    const node = stack.pop()
+    res.push(node.val)
+    if (node.right) stack.push(node.right)
+    if (node.left) stack.push(node.left)
+  }
+
+  return res
+};
+
+// or:
 
 /**
  * @param {TreeNode} root
