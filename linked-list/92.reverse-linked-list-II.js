@@ -120,3 +120,36 @@ var reverseBetween = function(head, left, right) {
   // 4. return the new head of the modified list
   return dummy.next
 };
+
+// or:
+
+/**
+ * @param {ListNode} head
+ * @param {number} left
+ * @param {number} right
+ * @return {ListNode}
+ */
+var reverseBetween = function(head, left, right) {
+  const dummy = new ListNode()
+  dummy.next = head
+  let cur = dummy
+
+  let leftPrev = null
+  for (let i = 0; i < left; i++) {
+    leftPrev = cur
+    cur = cur.next
+  }
+
+  let prev = null
+  for (let i = 0; i < right - left + 1; i++) {
+    const next = cur.next
+    cur.next = prev
+    prev = cur
+    cur = next
+  }
+
+  leftPrev.next.next = cur
+  leftPrev.next = prev
+
+  return dummy.next
+};
