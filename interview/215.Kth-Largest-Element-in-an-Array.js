@@ -141,6 +141,114 @@ class Heap {
  * @return {number}
  */
 var findKthLargest = function(nums, k) {
+  const maxHeap = new Heap((a, b) => b - a)
+  for (const num of nums) {
+    maxHeap.add(num)
+  }
+  let res = nums[0]
+  for (let i = 0; i < k; i++) {
+    res = maxHeap.pop()
+  }
+
+  return res
+};
+
+class Heap {
+  constructor(compareFn) {
+    this.compareFn = compareFn
+    this.heap = []
+  }
+
+  size() {
+    return this.heap.length
+  }
+
+  add(item) {
+    this.heap.push(item)
+    this.heapifyUp(this.size() - 1)
+  }
+
+  peek() {
+    return this.heap.at(-1)
+  }
+
+  pop() {
+    const top = this.heap[0]
+    const last = this.heap.pop()
+    if (this.size()) {
+      this.heap[0] = last
+      this.heapifyDown(0)
+    }
+
+    return top
+  }
+
+  heapifyUp(index) {
+    while (index > 0) {
+      const parentIndex = this.getParentIndex(index)
+      if (this.isHigherPriority(index, parentIndex)) {
+        this.swap(index, parentIndex)
+        index = parentIndex
+      } else {
+        break
+      }
+    }
+  }
+
+  heapifyDown(index) {
+    while (this.hasLeftChild(index)) {
+      const leftChildIndex = this.getLeftChildIndex(index)
+      const rightChildIndex = this.getRightChildIndex(index)
+      let higherPriorityChildIndex = leftChildIndex
+      if (this.hasRightChild(index) && this.isHigherPriority(rightChildIndex, leftChildIndex)) {
+        higherPriorityChildIndex = rightChildIndex
+      }
+      if (this.isHigherPriority(higherPriorityChildIndex, index)) {
+        this.swap(higherPriorityChildIndex, index)
+        index = higherPriorityChildIndex
+      } else {
+        break
+      }
+    }
+  }
+
+  hasLeftChild(index) {
+    return this.getLeftChildIndex(index) < this.size()
+  }
+
+  hasRightChild(index) {
+    return this.getRightChildIndex(index) < this.size()
+  }
+
+  getLeftChildIndex(index) {
+    return 2 * index + 1
+  }
+
+  getRightChildIndex(index) {
+    return 2 * index + 2
+  }
+
+  getParentIndex(index) {
+    return Math.floor((index - 1) / 2)
+  }
+
+  isHigherPriority(idx, idy) {
+    return this.compareFn(this.heap[idx], this.heap[idy]) < 0
+  }
+
+  swap(idx, idy) {
+    [this.heap[idx], this.heap[idy]] = [this.heap[idy], this.heap[idx]]
+  }
+}
+
+// or:
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest = function(nums, k) {
   const minHeap = new Heap((a, b) => a - b)
 
   for (const num of nums) {
