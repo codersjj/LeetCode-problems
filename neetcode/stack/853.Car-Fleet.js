@@ -86,3 +86,32 @@ var carFleet = function(target, position, speed) {
 
   return stack.length
 };
+
+// or:
+
+/**
+ * @param {number} target
+ * @param {number[]} position
+ * @param {number[]} speed
+ * @return {number}
+ */
+var carFleet = function(target, position, speed) {
+  const stack = []
+  const cars = Array(position.length)
+
+  position.forEach((pos, i) => {
+    cars[i] = [pos, speed[i]]
+  })
+
+  cars.sort((a, b) => b[0] - a[0])
+
+  for (const [pos, speed] of cars) {
+    const time = (target - pos) / speed
+    if (stack.length && stack.at(-1) >= time) {
+      continue
+    }
+    stack.push(time)
+  }
+
+  return stack.length
+};
