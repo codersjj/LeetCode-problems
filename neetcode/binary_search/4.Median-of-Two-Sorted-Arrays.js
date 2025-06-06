@@ -60,10 +60,10 @@ var findMedianSortedArrays = function(nums1, nums2) {
       } else {
         return (Math.max(maxLeftNums1, maxLeftNums2) + Math.min(minRightNums1, minRightNums2)) / 2
       }
-    } else if (maxLeftNums1 < minRightNums2) {
-      l = i + 1
-    } else {
+    } else if (maxLeftNums1 > minRightNums2) {
       r = i - 1
+    } else {
+      l = i + 1
     }
   }
 };
