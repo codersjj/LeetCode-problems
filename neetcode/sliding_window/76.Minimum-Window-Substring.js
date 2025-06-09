@@ -83,3 +83,53 @@ var minWindow = function(s, t) {
 
   return resLen === Infinity ? '' : s.slice(res[0], res[1] + 1)
 };
+
+// or:
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {string}
+ */
+var minWindow = function(s, t) {
+  if (s.length < t.length) return ''
+
+  const tCharToCount = {}
+  const window = {}
+  for (const c of t) {
+    tCharToCount[c] = (tCharToCount[c] ?? 0) + 1
+  }
+
+  let need = Object.keys(tCharToCount).length
+  let have = 0
+  let res = [-1, -1]
+  let resLen = Infinity
+
+  let l = 0
+  for (let r = 0; r < s.length; r++) {
+    const c = s[r]
+    window[c] = (window[c] ?? 0) + 1
+
+    if (tCharToCount[c] && tCharToCount[c] === window[c]) {
+      have++
+    }
+
+    while (have === need) {
+      // update result
+      if (r - l + 1 < resLen) {
+        res = [l, r]
+        resLen = r - l + 1
+      }
+
+      // pop from the left of window
+      const leftChar = s[l]
+      window[leftChar]--
+      if (tCharToCount[leftChar] && window[leftChar] < tCharToCount[leftChar]) {
+        have--
+      }
+      l++
+    }
+  }
+
+  return resLen === Infinity ? '' : s.slice(res[0], res[1] + 1)
+};
