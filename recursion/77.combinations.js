@@ -52,3 +52,32 @@ var combine = function(n, k) {
 
   return res
 };
+
+// or:
+
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine = function(n, k) {
+  const res = []
+  const comb = []
+
+  function dfs(i) {
+    if (comb.length === k) {
+      res.push([...comb])
+      return
+    }
+
+    for (let j = i; j <= n - (k - comb.length) + 1; j++) {
+      comb.push(j)
+      dfs(j + 1)
+      comb.pop()
+    }
+  }
+
+  dfs(1)
+
+  return res
+};
