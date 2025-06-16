@@ -84,3 +84,95 @@ LRUCache.prototype.put = function(key, value) {
  * var param_1 = obj.get(key)
  * obj.put(key,value)
  */
+
+// or:
+
+class ListNode {
+  constructor(key, val, prev, next) {
+    this.key = key
+    this.val = val
+    this.prev = prev ?? null
+    this.next = next ?? null
+  }
+}
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache = function(capacity) {
+  this.cap = capacity
+  this.cache = {} // map key to node
+  this.size = 0
+
+  // (dummy) left = LRU
+  this.left = new ListNode(0, 0)
+  // (dummy) right = most recent used
+  this.right = new ListNode(0, 0)
+
+  this.left.next = this.right
+  this.right.prev = this.left
+};
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function(key) {
+  if (this.cache[key]) {
+    // update most recent
+    this.remove(this.cache[key])
+    this.insert(this.cache[key])
+
+    return this.cache[key].val
+  }
+
+  return -1
+};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function(key, value) {
+  if (this.cache[key]) {
+    this.remove(this.cache[key])
+    this.size--
+  }
+  this.cache[key] = new ListNode(key, value)
+  this.insert(this.cache[key])
+  this.size++
+
+  if (this.size > this.cap) {
+    // remove from the list and delete the LRU from the hashmap
+    const lru = this.left.next
+    this.remove(lru)
+    this.size--
+    delete this.cache[lru.key]
+  }
+};
+
+// remove node from list
+LRUCache.prototype.remove = function(node) {
+  const prev = node.prev
+  const next = node.next
+  prev.next = next
+  next.prev = prev
+}
+
+// insert node at right
+LRUCache.prototype.insert = function(node) {
+  const prev = this.right.prev
+  const next = this.right
+  prev.next = node
+  node.prev = prev
+  node.next = next
+  next.prev = node
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */
