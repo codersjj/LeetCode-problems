@@ -58,7 +58,7 @@ var mergeKLists = function(lists) {
 
     for (let i = 0; i < lists.length; i += 2) {
       const l1 = lists[i]
-      const l2 = lists[i + 1] ?? null
+      const l2 = lists[i + 1]
       mergedList.push(mergeList(l1, l2))
     }
 
