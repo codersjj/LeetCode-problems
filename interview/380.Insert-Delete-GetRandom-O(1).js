@@ -91,3 +91,58 @@ RandomizedSet.prototype.getRandom = function() {
  * var param_2 = obj.remove(val)
  * var param_3 = obj.getRandom()
  */
+
+// or:
+
+var RandomizedSet = function() {
+  this.numMap = new Map()
+  this.numList = []
+};
+
+/**
+ * @param {number} val
+ * @return {boolean}
+ */
+RandomizedSet.prototype.insert = function(val) {
+  if (!this.numMap.has(val)) {
+    this.numMap.set(val, this.numList.length)
+    this.numList.push(val)
+    return true
+  }
+
+  return false
+};
+
+/**
+ * @param {number} val
+ * @return {boolean}
+ */
+RandomizedSet.prototype.remove = function(val) {
+  if (!this.numMap.has(val)) {
+    return false
+  }
+
+  const index = this.numMap.get(val)
+  const lastVal = this.numList.at(-1)
+  this.numList[index] = lastVal
+  this.numList.pop()
+  this.numMap.set(lastVal, index)
+  this.numMap.delete(val)
+
+  return true
+};
+
+/**
+ * @return {number}
+ */
+RandomizedSet.prototype.getRandom = function() {
+  return this.numList[Math.floor(Math.random() * this.numList.length)]
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * var obj = new RandomizedSet()
+ * var param_1 = obj.insert(val)
+ * var param_2 = obj.remove(val)
+ * var param_3 = obj.getRandom()
+ */
