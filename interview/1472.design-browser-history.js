@@ -147,3 +147,59 @@ BrowserHistory.prototype.forward = function(steps) {
  * var param_2 = obj.back(steps)
  * var param_3 = obj.forward(steps)
  */
+
+// or:
+
+/**
+ * @param {string} homepage
+ */
+var BrowserHistory = function(homepage) {
+  this.stack = [homepage]
+  this.currPos = 0
+};
+
+/**
+ * @param {string} url
+ * @return {void}
+ */
+BrowserHistory.prototype.visit = function(url) {
+  this.currPos++
+  this.stack[this.currPos] = url
+  this.stack.length = this.currPos + 1
+};
+
+/**
+ * @param {number} steps
+ * @return {string}
+ */
+BrowserHistory.prototype.back = function(steps) {
+  if (steps > this.currPos) {
+    this.currPos = 0
+    return this.stack[0]
+  }
+
+  this.currPos -= steps
+  return this.stack[this.currPos]
+};
+
+/**
+ * @param {number} steps
+ * @return {string}
+ */
+BrowserHistory.prototype.forward = function(steps) {
+  if (steps >= this.stack.length - this.currPos) {
+    this.currPos = this.stack.length - 1
+    return this.stack[this.currPos]
+  }
+
+  this.currPos += steps
+  return this.stack[this.currPos]
+};
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * var obj = new BrowserHistory(homepage)
+ * obj.visit(url)
+ * var param_2 = obj.back(steps)
+ * var param_3 = obj.forward(steps)
+ */
