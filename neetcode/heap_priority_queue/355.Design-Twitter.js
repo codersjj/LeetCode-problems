@@ -114,3 +114,177 @@ Twitter.prototype.unfollow = function(followerId, followeeId) {
  * obj.follow(followerId,followeeId)
  * obj.unfollow(followerId,followeeId)
  */
+
+// or: using a priority queue
+
+var Twitter = function() {
+  this.tweets = new Map() // Map<userId, Array<{ tweetId: number, time: number }>>
+  this.following = new Map() // Map<userId, Set<followeeId>>
+  this.time = 0
+};
+
+/**
+ * @param {number} userId
+ * @param {number} tweetId
+ * @return {void}
+ */
+Twitter.prototype.postTweet = function(userId, tweetId) {
+  if (!this.tweets.has(userId)) {
+    this.tweets.set(userId, [])
+  }
+  this.tweets.get(userId).push({ tweetId, time: this.time++ })
+};
+
+/**
+ * @param {number} userId
+ * @return {number[]}
+ */
+Twitter.prototype.getNewsFeed = function(userId) {
+  const res = []
+  const maxHeap = new Heap((a, b) => b - a)
+  const allTweets = []
+
+  if (this.tweets.has(userId)) {
+    const userTweets = this.tweets.get(userId)
+    allTweets.push(...userTweets.slice(-10))
+  }
+
+  const followees = this.following.get(userId) || new Set()
+  followees.forEach(followeeId => {
+    if (this.tweets.has(followeeId)) {
+      const followeeTweets = this.tweets.get(followeeId)
+      allTweets.push(...followeeTweets.slice(-10))
+    }
+  })
+
+  for (const tweet of allTweets) {
+    maxHeap.push(tweet)
+  }
+
+  while (maxHeap.size() && res.length < 10) {
+    const tweet = maxHeap.pop()
+    res.push(tweet.tweetId)
+  }
+
+  return res
+};
+
+/**
+ * @param {number} followerId
+ * @param {number} followeeId
+ * @return {void}
+ */
+Twitter.prototype.follow = function(followerId, followeeId) {
+  if (!this.following.has(followerId)) {
+    this.following.set(followerId, new Set())
+  }
+  this.following.get(followerId).add(followeeId)
+};
+
+/**
+ * @param {number} followerId
+ * @param {number} followeeId
+ * @return {void}
+ */
+Twitter.prototype.unfollow = function(followerId, followeeId) {
+  if (this.following.has(followerId)) {
+    this.following.get(followerId).delete(followeeId)
+  }
+};
+
+class Heap {
+  constructor(compareFn) {
+    this.compareFn = compareFn
+    this.heap = []
+  }
+
+  push(val) {
+    this.heap.push(val)
+    this.heapifyUp(this.heap.length - 1)
+  }
+
+  pop() {
+    const top = this.heap[0]
+    const last = this.heap.pop()
+    if (this.heap.length) {
+      this.heap[0] = last
+      this.heapifyDown(0)
+    }
+
+    return top
+  }
+
+  peek() {
+    return this.heap[0]
+  }
+
+  heapifyUp(index) {
+    while (index > 0) {
+      const parentIndex = this.getParentIndex(index)
+      if (this.isHigherPriority(index, parentIndex)) {
+        this.swap(index, parentIndex)
+        index = parentIndex
+      } else {
+        break
+      }
+    }
+  }
+
+  heapifyDown(index) {
+    while (this.hasLeftChild(index)) {
+      const leftChildIndex = this.getLeftChildIndex(index)
+      const rightChildIndex = this.getRightChildIndex(index)
+      let higherPriorityChildIndex = leftChildIndex
+      if (this.hasRightChild(index) && this.isHigherPriority(rightChildIndex, leftChildIndex)) {
+        higherPriorityChildIndex = rightChildIndex
+      }
+      if (this.isHigherPriority(higherPriorityChildIndex, index)) {
+        this.swap(index, higherPriorityChildIndex)
+        index = higherPriorityChildIndex
+      } else {
+        break
+      }
+    }
+  }
+
+  getParentIndex(index) {
+    return Math.floor((index - 1) / 2)
+  }
+
+  getLeftChildIndex(index) {
+    return 2 * index + 1
+  }
+
+  getRightChildIndex(index) {
+    return 2 * index + 2
+  }
+
+  isHigherPriority(index1, index2) {
+    return this.compareFn(this.heap[index1].time, this.heap[index2].time) < 0
+  }
+
+  swap(index1, index2) {
+    [this.heap[index1], this.heap[index2]] = [this.heap[index2], this.heap[index1]]
+  }
+
+  size() {
+    return this.heap.length
+  }
+
+  hasLeftChild(index) {
+    return this.getLeftChildIndex(index) < this.size()
+  }
+
+  hasRightChild(index) {
+    return this.getRightChildIndex(index) < this.size()
+  }
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * var obj = new Twitter()
+ * obj.postTweet(userId,tweetId)
+ * var param_2 = obj.getNewsFeed(userId)
+ * obj.follow(followerId,followeeId)
+ * obj.unfollow(followerId,followeeId)
+ */
