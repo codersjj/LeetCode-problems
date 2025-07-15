@@ -35,6 +35,8 @@ n == grid[i].length
 grid[i][j] is '0' or '1'.
 */
 
+// DFS approach:
+
 /**
  * @param {character[][]} grid
  * @return {number}
@@ -69,6 +71,52 @@ var numIslands = function(grid) {
       if (grid[r][c] === '1' && !visited[r][c]) {
         islandCount++
         dfs(r, c)
+      }
+    }
+  }
+
+  return islandCount
+};
+
+// or: BFS approach:
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands = function(grid) {
+  const rows = grid.length
+  const cols = grid[0].length
+  let islandCount = 0
+  const visited = Array(rows).fill().map(() => Array(cols).fill(false))
+
+  function bfs(r, c) {
+    const queue = [[r, c]]
+    visited[r][c] = true
+    const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+    while (queue.length) {
+      const [row, col] = queue.shift()
+      for (const [dr, dc] of directions) {
+        const r = row + dr
+        const c = col + dc
+        if (
+          r >= 0 && r < rows && c >= 0 && c < cols &&
+          grid[r][c] === '1' &&
+          visited[r][c] === false
+        ) {
+          visited[r][c] = true
+          queue.push([r, c])
+        }
+      }
+    }
+  }
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (grid[r][c] === '1' && !visited[r][c]) {
+        islandCount++
+        bfs(r, c)
       }
     }
   }
